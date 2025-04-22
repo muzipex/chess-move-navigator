@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import ThemeToggle from '@/components/ThemeToggle';
 import ChessAnalyzer from '@/components/ChessAnalyzer';
+import ChessCamera from '@/components/ChessCamera';
 
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -32,6 +32,7 @@ const Index = () => {
       </header>
       
       <main className="container mx-auto py-8 px-4">
+        <ChessCamera />
         <ChessAnalyzer isDarkMode={isDarkMode} />
       </main>
       
