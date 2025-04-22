@@ -9,9 +9,22 @@ const config: CapacitorConfig = {
     url: 'https://4f8d2552-974e-4eda-b0e8-2afdf5ac21ee.lovableproject.com?forceHideBadge=true',
     cleartext: true
   },
+  android: {
+    buildOptions: {
+      androidxCore: '1.7.0',
+      androidxAppCompat: '1.4.2',
+    }
+  },
   plugins: {
     Camera: {
       permissionDescription: "The app needs camera access to detect chess positions."
+    },
+    Permissions: {
+      permissions: [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.CAMERA"
+      ]
     }
   }
 };
