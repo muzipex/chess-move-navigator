@@ -1,6 +1,9 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
 
 @layer base {
   :root {
@@ -35,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -97,5 +93,51 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
+  
+  .monospace {
+    font-family: 'Source Code Pro', monospace;
+  }
+}
+
+.chess-piece {
+  cursor: grab;
+  user-select: none;
+}
+
+.chess-piece:active {
+  cursor: grabbing;
+}
+
+.chess-square-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(54, 146, 231, 0.5);
+  border-radius: 50%;
+  transform: scale(0.7);
+  pointer-events: none;
+}
+
+.chess-square-target {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(105, 170, 64, 0.5);
+  border-radius: 50%;
+  transform: scale(0.7);
+  pointer-events: none;
+}
+
+.rotate-board {
+  transform: rotate(180deg);
+}
+
+.rotate-piece {
+  transform: rotate(180deg);
 }
