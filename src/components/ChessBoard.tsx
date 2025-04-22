@@ -20,7 +20,8 @@ const ChessBoard = ({
   boardWidth = 500,
   isDarkMode = false
 }: ChessBoardProps) => {
-  const [game, setGame] = useState(new Chess());
+  // Create a new game instance that persists during component lifetime
+  const [game, setGame] = useState<Chess>(new Chess());
   const [arePiecesDraggable, setArePiecesDraggable] = useState(true);
 
   useEffect(() => {
@@ -31,18 +32,29 @@ const ChessBoard = ({
 
   function onDrop(sourceSquare: string, targetSquare: string) {
     try {
-      const move = game.move({
+      // Try to make the move
+      const moveConfig = {
         from: sourceSquare,
         to: targetSquare,
         promotion: 'q', // Always promote to a queen for simplicity
-      });
+      };
+      
+      // Make a copy of the current game state
+      const gameCopy = new Chess(game.fen());
+      
+      // Try to make the move
+      const move = gameCopy.move(moveConfig);
 
       // If move is invalid
       if (move === null) return false;
       
-      setGame(new Chess(game.fen()));
+      // Update the game state with the new position
+      setGame(gameCopy);
+      
+      // Return true to indicate the move was valid
       return true;
     } catch (e) {
+      console.error('Error making move:', e);
       return false;
     }
   }
@@ -101,10 +113,13 @@ const ChessBoard = ({
             left: `${(highlightSquare.charCodeAt(0) - 97) * 12.5}%`,
             width: '12.5%',
             height: '12.5%',
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(54, 146, 231, 0.5)',
+            borderRadius: '50%',
+            transform: 'scale(0.7)',
+            zIndex: 1
           }}
-        >
-          <div className="chess-square-highlight" />
-        </div>
+        />
       );
     }
     
@@ -118,10 +133,13 @@ const ChessBoard = ({
             left: `${(targetSquare.charCodeAt(0) - 97) * 12.5}%`,
             width: '12.5%',
             height: '12.5%',
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(105, 170, 64, 0.5)',
+            borderRadius: '50%',
+            transform: 'scale(0.7)',
+            zIndex: 1
           }}
-        >
-          <div className="chess-square-target" />
-        </div>
+        />
       );
     }
     
@@ -133,7 +151,7 @@ const ChessBoard = ({
       <div style={{ width: boardWidth }}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div>
+            <div className="relative">
               <Chessboard
                 id="StandardBoard"
                 position={game.fen()}
@@ -147,7 +165,6 @@ const ChessBoard = ({
                 customDarkSquareStyle={{ backgroundColor: isDarkMode ? '#769656' : '#b58863' }}
                 customLightSquareStyle={{ backgroundColor: isDarkMode ? '#eeeed2' : '#f0d9b5' }}
               />
-              {/* Overlay for custom highlights */}
               <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
                 {customSquareRenderers()}
               </div>
